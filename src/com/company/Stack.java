@@ -61,6 +61,91 @@ public class Stack<TElement> implements Collection {
     }
 
     @Override
+    public boolean contains(Object e) {
+        Element temp = current;
+
+        while(temp != null){
+            if(temp.getCurrentValue().equals(e)) return true;
+            temp = temp.getPrev();
+        }
+        return false;
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object[] result = new Object[this.size()];
+        Element temp = current;
+
+        for(int i = 0; temp != null; i++){
+            result[i] = temp.getCurrentValue();
+            temp = temp.getPrev();
+        }
+        return result;
+    }
+
+    @Override
+    public Object[] toArray(Object[] a) {
+        return new Object[0];
+    }
+
+    @Override
+    public boolean add(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object e) {
+        int i;
+        Element temp = current;
+        Element last = this.last;
+        for(i = 0; temp != null; i++){
+            if(temp.getCurrentValue() == e) {
+                last.setPrev(temp.getPrev());
+                return true;
+            }
+            last = temp;
+            temp = temp.getPrev();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        for(Object o : c){
+            if(!contains(o)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addAll(Collection c) {
+        return false;
+    }
+
+    public boolean addAll(Stack<TElement> s) throws Exception {
+        int i;
+
+        for(i = 0; !s.isEmpty(); i++){
+            this.push(s.pop());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+        for(Object o : c){
+            remove(o);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return false;
+    }
+
+
+    @Override
     public boolean removeIf(Predicate filter) {
         return false;
     }
@@ -81,79 +166,7 @@ public class Stack<TElement> implements Collection {
     }
 
     @Override
-    public boolean contains(Object e) {
-        int i;
-        Element temp = current;
-
-        for(i = 0; temp != null; i++){
-            if(temp.getCurrentValue().equals(e)) return true;
-            temp = temp.getPrev();
-        }
-        return false;
-    }
-
-    @Override
     public Iterator iterator() {
         return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
-    }
-
-    @Override
-    public boolean add(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Object e) {
-        int i;
-        Element temp = current;
-        Element last = null;
-        for(i = 0; temp != null; i++){
-            if(temp.getCurrentValue() == e) {
-                last.setPrev(temp.getPrev());
-                return true;
-            }
-            last = temp;
-            temp = temp.getPrev();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection c) {
-        return false;
-    }
-
-    public boolean addAll(Stack<TElement> s) throws Exception {
-        int i;
-
-        for(i = 0; !s.isEmpty(); i++){
-            this.push(s.pop());
-        }
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection c) {
-        return false;
     }
 }
