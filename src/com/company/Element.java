@@ -3,7 +3,7 @@ package com.company;
 class Element<TElement> {
     private TElement currentValue;
     private Element prev;
-    
+
     Element(TElement current, Element element){
         setCurrentValue(current);
         setPrev(element);
