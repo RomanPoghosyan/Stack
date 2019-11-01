@@ -1,63 +1,159 @@
 package com.company;
 
-abstract class Stack<TElement>
-{
-    /**
-     * adds item from end
-     * @param element of type TElement
-     */
-    public abstract void push(TElement element);
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-    /**
-     *
-     * @return TElement from end
-     * @throws Exception if stack is empty
-     */
-    public abstract TElement pop() throws Exception;
+public class Stack<TElement> implements Collection {
+    private Element last;
+    private Element current;
 
-    /**
-     *
-     * @return size of the stack
-     */
-    public abstract int size();
+    Stack(){
+        last = null;
+        current = null;
+    }
 
-    /**
-     *
-     * @return last element of the stack
-     * @throws Exception when stak is empty
-     */
-    public abstract TElement pick() throws Exception;
+    public void push(TElement tElement) {
+        last = current;
+        current = new Element(tElement, last);
+    }
 
-    /**
-     *
-     * @return true is stack is empty
-     */
-    public abstract boolean isEmpty();
+    public TElement pop() throws Exception {
+        if(current == null) throw new Exception("Stack is empty");
+        Element temp = current;
+        current = last;
+        if(last != null) {
+            last = last.getPrev();
+        }
+        return (TElement) temp.getCurrentValue();
+    }
 
-    /**
-     *
-     * @param e
-     * @return true if stack contains TElement e
-     */
-    public abstract boolean contains(TElement e);
+    public TElement peek() throws Exception {
+        if(current != null) {
+            return (TElement) current.getCurrentValue();
+        } else {
+            throw new Exception("Stack is empty");
+        }
+    }
 
-    /**
-     *
-     * @param e
-     * @return true if TElement e was removed
-     */
-    public abstract boolean remove(TElement e);
+    @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
 
-    /**
-     * removes all elements from stack
-     */
-    public abstract void clear();
+    @Override
+    public void clear() {
+        last = null;
+        current = null;
+    }
 
-    /**
-     *
-     * @param s
-     * @return true if all elements were added
-     * @throws Exception if Stack s is empty
-     */
-    public abstract boolean addAll(Stack<TElement> s) throws Exception;
+    @Override
+    public int size() {
+        int i;
+        Element temp = current;
+
+        for(i = 0; temp != null; i++){
+            temp = temp.getPrev();
+        }
+        return i;
+    }
+
+    @Override
+    public boolean removeIf(Predicate filter) {
+        return false;
+    }
+
+    @Override
+    public Spliterator spliterator() {
+        return null;
+    }
+
+    @Override
+    public Stream stream() {
+        return null;
+    }
+
+    @Override
+    public Stream parallelStream() {
+        return null;
+    }
+
+    @Override
+    public boolean contains(Object e) {
+        int i;
+        Element temp = current;
+
+        for(i = 0; temp != null; i++){
+            if(temp.getCurrentValue().equals(e)) return true;
+            temp = temp.getPrev();
+        }
+        return false;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public Object[] toArray(Object[] a) {
+        return new Object[0];
+    }
+
+    @Override
+    public boolean add(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object e) {
+        int i;
+        Element temp = current;
+        Element last = null;
+        for(i = 0; temp != null; i++){
+            if(temp.getCurrentValue() == e) {
+                last.setPrev(temp.getPrev());
+                return true;
+            }
+            last = temp;
+            temp = temp.getPrev();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection c) {
+        return false;
+    }
+
+    public boolean addAll(Stack<TElement> s) throws Exception {
+        int i;
+
+        for(i = 0; !s.isEmpty(); i++){
+            this.push(s.pop());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return false;
+    }
 }
