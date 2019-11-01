@@ -10,7 +10,7 @@ public class Stack<TElement> implements Collection {
     private Element last;
     private Element current;
 
-    Stack(){
+    Stack() {
         last = null;
         current = null;
     }
@@ -21,17 +21,17 @@ public class Stack<TElement> implements Collection {
     }
 
     public TElement pop() throws Exception {
-        if(current == null) throw new Exception("Stack is empty");
+        if (current == null) throw new Exception("Stack is empty");
         Element temp = current;
         current = last;
-        if(last != null) {
+        if (last != null) {
             last = last.getPrev();
         }
         return (TElement) temp.getCurrentValue();
     }
 
     public TElement peek() throws Exception {
-        if(current != null) {
+        if (current != null) {
             return (TElement) current.getCurrentValue();
         } else {
             throw new Exception("Stack is empty");
@@ -54,7 +54,7 @@ public class Stack<TElement> implements Collection {
         int i;
         Element temp = current;
 
-        for(i = 0; temp != null; i++){
+        for (i = 0; temp != null; i++) {
             temp = temp.getPrev();
         }
         return i;
@@ -64,8 +64,8 @@ public class Stack<TElement> implements Collection {
     public boolean contains(Object e) {
         Element temp = current;
 
-        while(temp != null){
-            if(temp.getCurrentValue().equals(e)) return true;
+        while (temp != null) {
+            if (temp.getCurrentValue().equals(e)) return true;
             temp = temp.getPrev();
         }
         return false;
@@ -76,7 +76,7 @@ public class Stack<TElement> implements Collection {
         Object[] result = new Object[this.size()];
         Element temp = current;
 
-        for(int i = 0; temp != null; i++){
+        for (int i = 0; temp != null; i++) {
             result[i] = temp.getCurrentValue();
             temp = temp.getPrev();
         }
@@ -98,8 +98,8 @@ public class Stack<TElement> implements Collection {
         int i;
         Element temp = current;
         Element last = this.last;
-        for(i = 0; temp != null; i++){
-            if(temp.getCurrentValue() == e) {
+        for (i = 0; temp != null; i++) {
+            if (temp.getCurrentValue() == e) {
                 last.setPrev(temp.getPrev());
                 return true;
             }
@@ -111,8 +111,8 @@ public class Stack<TElement> implements Collection {
 
     @Override
     public boolean containsAll(Collection c) {
-        for(Object o : c){
-            if(!contains(o)) return false;
+        for (Object o : c) {
+            if (!contains(o)) return false;
         }
         return true;
     }
@@ -125,7 +125,7 @@ public class Stack<TElement> implements Collection {
     public boolean addAll(Stack<TElement> s) throws Exception {
         int i;
 
-        for(i = 0; !s.isEmpty(); i++){
+        for (i = 0; !s.isEmpty(); i++) {
             this.push(s.pop());
         }
         return false;
@@ -133,7 +133,7 @@ public class Stack<TElement> implements Collection {
 
     @Override
     public boolean removeAll(Collection c) {
-        for(Object o : c){
+        for (Object o : c) {
             remove(o);
         }
         return true;
